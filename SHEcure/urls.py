@@ -1,5 +1,5 @@
 """
-URL configuration for SHEcure project.
+URL configuration for harassment_platform project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from reports import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.landing_page, name='landingpage'),
+    path('home/', views.home, name='home'),
+    path('reports/', views.reports_list, name='reports_list'),
+    path('submit/', views.report_submission, name='report_submission'),
 ]
