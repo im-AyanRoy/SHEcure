@@ -1,0 +1,700 @@
+{% load static %}
+<!-- reports.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports List</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+    <style>
+        /* General Styling */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #000000;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            flex: 1;
+        }
+
+        /* General Styling */
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Comments Container */
+        .comments-container {
+            background-color:rgb(31, 33, 35);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
+        }
+        
+        /* Toggle Button */
+        .toggle-comments-btn {
+            background-color:rgb(255, 0, 0);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .toggle-comments-btn:hover {
+            background-color: #e74c3c;
+        }
+        
+        /* Comments Section */
+        .comments-section {
+            background: #222;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        /* Comment List */
+        .comment-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 5px;
+        }
+        
+        .comment-item {
+            background: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-item p {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .comment-item small {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #bbb;
+        }
+        
+        /* No Comments Text */
+        .no-comments {
+            font-style: italic;
+            color: #bbb;
+            text-align: center;
+        }
+        
+        /* Header Section */
+        .reports-section {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        /* Report Card */
+        .report-card {
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 10px rgba(255, 0, 0, 0.2);
+        }
+        
+        /* Report Header */
+        .report-header {
+            font-size: 16px;
+            font-weight: bold;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #666;
+            margin-bottom: 10px;
+        }
+        
+        .report-location {
+            color: #ff6b6b;
+        }
+        
+        .report-type {
+            color: #ffa502;
+        }
+        
+        .report-date, .report-time {
+            color: #ced6e0;
+        }
+        
+        /* Report Description */
+        .report-description {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        /* Alerts */
+        .alert {
+            background-color: #28a745;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        /* Comment Form */
+        .comment-form {
+            margin-top: 15px;
+        }
+        
+        /* Fixed size for input fields */
+        .comment-form input {
+            width: 600px; /* Fixed width */
+            height: 35px; /* Fixed height */
+            padding: 8px;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        /* Fixed size for textarea */
+        .comment-form textarea {
+            width: 300px; /* Fixed width */
+            height: 80px; /* Fixed height */
+            padding: 8px;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 5px;
+            resize: none; /* Prevents resizing */
+            font-size: 14px;
+        }
+        
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            border-color: #ff6b6b;
+            outline: none;
+        }
+        
+        /* Submit Button */
+        .submit-comment-btn {
+            background-color: #ff6b6b;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            margin-top: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-comment-btn:hover {
+            background-color: #e74c3c;
+        }
+
+        .title {
+            text-align: center;
+            color: #ff4c4c;
+        }
+        
+        .heading-divider {
+            width: 100%;
+            height: 2px;
+            background-color: #ff4c4c;
+            margin-bottom: 20px;
+        }
+        
+        /* Buttons */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .button {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        
+        .button.is-link {
+            background-color: #ff4c4c;
+            color: white;
+        }
+        
+        .button.is-light {
+            background-color: #444;
+            color: white;
+        }
+        
+        /* Filter Box */
+        .filter-box {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-box h3 {
+            margin-bottom: 5px;
+        }
+        
+        .filter-box input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ff4c4c;
+            background-color: #222;
+            color: white;
+        }
+        
+        .apply-filters {
+            width: 100%;
+            padding: 8px;
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .apply-filters:hover {
+            background-color: #d13434;
+        }
+        
+        /* Reports */
+        .report-container {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .report-header {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff4c4c;
+            margin-bottom: 10px;
+        }
+        
+        .report-description {
+            margin-bottom: 15px;
+        }
+        
+        /* Alert Messages */
+        .alert {
+            padding: 10px;
+            background-color: #ff4c4c;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        /* Comment Section */
+        .comment-form {
+            margin-top: 10px;
+        }
+        
+        .comment-box {
+            width: 100%;
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid #ff4c4c;
+            background-color: #222;
+            color: white;
+            padding: 5px;
+        }
+        
+        .submit-comment {
+            background-color: #ff4c4c;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            margin-top: 5px;
+        }
+        
+        .submit-comment:hover {
+            background-color: #d13434;
+        }
+        
+        /* Comments List */
+        .comments-section {
+            margin-top: 15px;
+        }
+        
+        .comment-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comment-item {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .comment-item small {
+            font-size: 12px;
+            color: #bbb;
+        }
+        .title {
+            color: rgb(215, 29, 29);
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-section {
+            background-color: rgba(255, 0, 0, 0.2);
+            padding: 1.5rem;
+            border: 1px solid #8B0000;
+            border-radius: 6px;
+            margin-top: 195px
+        }
+
+        .container {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .input {
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            border: 1px solid #ff4d4d;
+        }
+
+        .input::placeholder {
+            color: #888;
+        }
+
+        .button.is-primary, .button.is-link, .button.is-light {
+            background-color: #8B0000; /* Dark red */
+            border-color: #8B0000;
+            color: white;
+        }
+
+        .button.is-primary:hover, .button.is-link:hover, .button.is-light:hover {
+            background-color: #FF6347; /* Light red for hover */
+            border-color: #FF6347;
+            color: white;
+        }
+
+        .media-left .image img {
+            border: 2px solid #FF0000;
+            transition: transform 0.3s ease-in-out; /* Image zoom effect */
+        }
+
+        .media-left img:hover {
+            transform: scale(1.1); /* Zoom the image slightly */
+        }
+
+        .report-header span {
+            color: #FF6347;
+        }
+
+        .report-header span:not(:last-child)::after {
+            color: #f0f0f0;
+        }
+
+        .report-description {
+            color: #f0f0f0;
+        }
+
+        /* Reports Section - Now wider and non-transparent */
+        .reports-section {
+            background-color: none; /* Solid dark red background */
+            padding: 2rem; /* Increased padding */
+            border: none; /* Removed border */
+            border-radius: 8px; /* Rounded corners */
+            width: 100%; /* Full width */
+            max-width: 1200px; /* Max width to avoid stretch */
+            margin: 0 auto; /* Centering the section */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Optional shadow for depth */
+        }
+
+       /* Footer */
+       footer {
+            text-align: center;
+            padding: 10px;
+            background: rgb(27, 27, 27);
+            color: white;
+            position: relative;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            margin-top: auto; /* Ensures footer stays at the bottom */
+        }
+
+        footer a {
+            color: #FF6347; /* Vibrant orange-red */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #FF4500; /* Slightly darker red for hover */
+            text-decoration: underline;
+        }
+
+        /* Clear Floats */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        footer a {
+            color: #FF6347;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #FF4500;
+            text-decoration: underline;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            gap: 1rem; /* Add spacing between buttons */
+            margin-top: 2rem;
+        }
+
+        /* Divider Styling */
+        .heading-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFD700, #FF4500, #FFD700); /* Gold to red gradient */
+            margin: 15px auto;
+            border-radius: 10px;
+            background-size: 200% 100%; /* Necessary for shimmer effect */
+            animation: shimmer 2s infinite linear; /* Animated shimmer */
+        }
+
+        /* Shimmer Animation */
+        @keyframes shimmer {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Media Queries for Small Screens */
+        @media (max-width: 768px) {
+            .filter-section {
+                margin-top: 20px;
+            }
+
+            .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .reports-section {
+                padding: 1rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <form method="get">
+                    <div class="field">
+                        <label class="label">Filter by Type</label>
+                        <div class="control">
+                            <input class="input" type="text" name="type" placeholder="Enter type of harassment">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Filter by Location</label>
+                        <div class="control">
+                            <input class="input" type="text" name="location" placeholder="Enter location">
+                        </div>
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary" type="submit">Apply Filters</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Reports Section -->
+            <div class="reports-section">
+                <h1 class="title">List of Crime Reports</h1>
+                <div class="heading-divider"></div>
+                <div class="buttons">
+                    <a class="button is-link" href="{% url 'report_submission' %}">Submit a Report</a>
+                    <a class="button is-light" href="{% url 'home' %}">Home</a>
+                </div>
+                <div class="box">
+                    {% for report in reports %}
+                    <article class="report-card">
+                        <div class="report-header">
+                            <span class="report-location"><b>{{ report.location }}</b></span> |
+                            <span class="report-type"><b>{{ report.harassment_type }}</b></span> |
+                            <span class="report-date"><b>{{ report.date|date:"M. j, Y" }}</b></span> |
+                            <span class="report-time"><b>{{ report.time|time:"g:i a" }}</b></span>
+                        </div>
+                        
+                        <p class="report-description">{{ report.description }}</p>
+                    
+                        <!-- Alert Messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    <!-- Comments Container -->
+<div class="comments-container">
+    <!-- Toggle Comments Button -->
+    <button class="toggle-comments-btn" onclick="toggleComments('{{ report.id }}')">
+        Show Comments
+    </button>
+
+    <!-- Comments Section (Initially Hidden) -->
+    <div class="comments-section" id="comments-{{ report.id }}" style="display: none;">
+        <!-- Comment Form -->
+        <form method="post" action="{% url 'reports_list' %}" class="comment-form">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{ report.id }}">
+            {{ comment_form.as_p }}
+            <button type="submit" class="submit-comment-btn">Post</button>
+        </form>
+        <h4>Previous Comments : </h4>
+        {% if report.comments.exists %}
+            <ul class="comment-list">
+                {% for comment in report.comments.all %}
+                    <li class="comment-item">
+                        <p>{{ comment.text }}</p>
+                        <small>Posted on: {{ comment.created_at|date:"F j, Y" }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-comments">No comments yet.</p>
+        {% endif %}
+    </div>
+</div>
+                    </article>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section -->
+    <section>
+        <footer>
+            <p>Made with <span>❤️</span> by <b>Glitch Goblins</b> team</p>
+        </footer>
+    </section>
+    <!-- JavaScript for Upvote Feature -->
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let seenComments = new Set();
+            document.querySelectorAll(".comment-item").forEach(function(comment) {
+                let text = comment.innerText.trim();
+                if (seenComments.has(text)) {
+                    comment.remove();  // Remove duplicate comment
+                } else {
+                    seenComments.add(text);
+                }
+            });
+        });
+
+
+        function toggleComments(reportId) {
+            let commentsSection = document.getElementById("comments-" + reportId);
+            let button = document.querySelector(`button[onclick="toggleComments('${reportId}')"]`);
+    
+            if (commentsSection.style.display === "none") {
+                commentsSection.style.display = "block";
+                button.textContent = "Hide Comments";
+            } else {
+                commentsSection.style.display = "none";
+                button.textContent = "Show Comments";
+            }
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the CSRF token from the hidden input field
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Add click event listeners to all upvote buttons
+            document.querySelectorAll(".upvote-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    // Get the report ID from the button's data attribute
+                    const reportId = this.getAttribute("data-report-id");
+
+                    // Send a POST request to the server
+                    fetch(`/upvote/${reportId}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": csrfToken,  // Include the CSRF token
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error("Server responded with status:", response.status);
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === "success") {
+                            // Update the upvote count dynamically
+                            document.getElementById(`upvote-count-${reportId}`).innerText = `${data.upvotes} Upvotes`;
+                        } else if (data.status === "already_upvoted") {
+                            alert("You have already upvoted this report.");
+                        } else {
+                            alert("An error occurred while processing your request.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("An error occurred while processing your request.");
+                    });
+                });
+            });
+        });
+        
+    </script>
+</body>
+</html>

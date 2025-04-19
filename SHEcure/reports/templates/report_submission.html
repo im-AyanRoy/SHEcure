@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+    <style>
+        /* Styles (same as before) */
+        body {
+            background-color: #000;
+            color: #f5f5f5;
+            font-family: "Roboto", sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        .title {
+            color:rgb(216, 0, 0);
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        /* Custom Success Notification Color */
+        .notification.is-success {
+            background-color:rgb(180, 0, 0); /* Green background */
+            color: #fff; /* White text */
+        }
+    
+        .notification.is-success strong {
+            color: #fff; /* White text for the strong tag */
+        }
+        .box {
+            background-color: #121212;
+            border: 2px solidrgb(255, 255, 255);
+            border-radius: 10px;
+            padding: 30px;
+        }
+        input, textarea, select {
+            background-color: #000;
+            border: 1px solid #444;
+            color: #f5f5f5;
+            border-radius: 5px;
+        }
+        input:hover, textarea:hover, select:hover {
+            border-color: #ff0033;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color:rgb(204, 91, 114);
+        }
+        .button {
+            background-color: #ff0033;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .button:hover {
+            background-color: #cc002a;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+       footer {
+            text-align: center;
+            padding: 10px;
+            background: rgb(27, 27, 27);
+            color: white;
+            position: relative;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            margin-top: auto; /* Ensures footer stays at the bottom */
+        }
+
+        footer a {
+            color: #FF6347; /* Vibrant orange-red */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #FF4500; /* Slightly darker red for hover */
+            text-decoration: underline;
+        }
+        
+        /* Divider Styling */
+
+        .heading-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFD700, #FF4500, #FFD700); /* Gold to red gradient */
+            margin: 15px auto;
+            border-radius: 10px;
+            animation: shimmer 2s infinite linear; /* Animated shimmer */
+        }
+
+        /* Shimmer Animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(255, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                text-shadow: 0 0 20px rgb(90, 8, 8), 0 0 40px rgba(0, 0, 0, 0.8);
+            }
+            100% {
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.5);
+            }
+        }
+        
+        #heading {
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200px 0;
+            }
+            100% {
+                background-position: 200px 0;
+            }
+        }
+        
+        .shimmer-effect {
+            background: linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.1) 25%,  /* Light red */
+                rgba(255, 215, 0, 0.5) 50%, /* Golden */
+                rgba(255, 0, 0, 0.1) 75%   /* Light red */
+            );
+            background-size: 400px 100%; /* Determines the shimmer width */
+            animation: shimmer 3s infinite;
+            color: #fff; /* Text color on top of shimmer */
+            padding: 10px 20px; /* Optional styling */
+            border-radius: 5px; /* Optional styling */
+            display: inline-block; /* Ensure it works with content */
+        }
+    
+    </style>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Submit a Harassment Report</h1>
+            <div class="heading-divider"></div>
+            {% if success %}
+                <div class="notification is-success" id="success-message">
+                    <strong>Your report has been successfully submitted!</strong>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        document.getElementById('success-message').style.display = 'none';
+                    }, 2000);
+                </script>
+            {% endif %}
+            <form method="post" class="box" id="report-form">
+                {% csrf_token %}
+                <div class="field">
+                    <label class="label">Are you the victim or a non-victim?</label>
+                    <div class="control">
+                        <label class="radio">
+                            <input type="radio" name="role" value="victim" required>
+                            Victim
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="role" value="non-victim" required>
+                            Non-Victim
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Location</label>
+                    <div class="control">
+                        <input class="input" type="text" name="location" id="location" placeholder="Enter the location" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <button class="button is-info" type="button" id="auto-location-btn">Use Current Location</button>
+                </div>
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+                <div class="field">
+                    <label class="label">Date</label>
+                    <div class="control">
+                        <input class="input" type="date" name="date" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Approximate Time</label>
+                    <div class="control">
+                        <input class="input" type="text" name="time" placeholder="e.g., 10:30:00 - 24hrs format" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Type of Crime</label>
+                    <div class="control">
+                        <div class="select">
+                            <select name="harassment_type" required>
+                                <option value="arson">Arson</option>
+                                <option value="assault">Assault</option>
+                                <option value="burglary">Burglary</option>
+                                <option value="counterfeiting">Counterfeiting</option>
+                                <option value="cybercrime">Cybercrime</option>
+                                <option value="domestic_violence">Domestic Violence</option>
+                                <option value="drug offense">Drug Offense</option>
+                                <option value="extortion">Extortion</option>
+                                <option value="firearm offense">Firearm Offense</option>
+                                <option value="fraud">Fraud</option>
+                                <option value="homicide">Homicide</option>
+                                <option value="identity theft">Identity Theft</option>
+                                <option value="illegal possession">Illegal Possession</option>
+                                <option value="kidnapping">Kidnapping</option>
+                                <option value="public intoxication">Public Intoxication</option>
+                                <option value="robbery">Robbery</option>
+                                <option value="sexual assault">Sexual Assault</option>
+                                <option value="shoplifting">Shoplifting</option>
+                                <option value="traffic violation">Traffic Violation</option>
+                                <option value="vandalism">Vandalism</option>
+                                <option value="vehicle stolen">Vehicle - Stolen</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Description</label>
+                    <div class="control">
+                        <textarea class="textarea" name="description" placeholder="Provide a detailed description" required></textarea>
+                    </div>
+                </div>
+                <div class="control">
+                    <button class="button is-primary" type="submit">Submit Report</button>
+                </div>
+            </form>
+            <div class="buttons" style="text-align: center;">
+                <a href="{% url 'reports_list' %}" class="button is-light">View Reports</a>
+                <a href="{% url 'home' %}" class="button is-light">Home</a>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <p>Made with <span>❤️</span> by <b>Glitch Goblins</b> team</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const autoLocationBtn = document.getElementById("auto-location-btn");
+            const locationInput = document.getElementById("location");
+            const latitudeInput = document.getElementById("latitude");
+            const longitudeInput = document.getElementById("longitude");
+
+            autoLocationBtn.addEventListener("click", function () {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function (position) {
+                            const latitude = position.coords.latitude;
+                            const longitude = position.coords.longitude;
+
+                            latitudeInput.value = latitude;
+                            longitudeInput.value = longitude;
+
+                            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.display_name) {
+                                        locationInput.value = data.display_name;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error reverse geocoding:", error);
+                                });
+                        },
+                        function (error) {
+                            alert("Unable to retrieve your location. Please enable location services or enter manually.");
+                            console.error("Geolocation error:", error);
+                        }
+                    );
+                } else {
+                    alert("Geolocation is not supported by your browser.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
